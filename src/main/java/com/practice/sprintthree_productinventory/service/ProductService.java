@@ -1,7 +1,9 @@
 package com.practice.sprintthree_productinventory.service;
 
 import com.practice.sprintthree_productinventory.dto.request.ProductCreateRequest;
+import com.practice.sprintthree_productinventory.dto.request.ProductUpdateRequest;
 import com.practice.sprintthree_productinventory.dto.response.ProductResponse;
+import com.practice.sprintthree_productinventory.exception.ProductNotFoundException;
 import com.practice.sprintthree_productinventory.model.Product;
 import com.practice.sprintthree_productinventory.repository.ProductRepository;
 
@@ -26,6 +28,22 @@ public class ProductService {
         product.setUpdatedAt(now);
 
         return mapToResponse(productRepository.save(product));
+    }
+
+    public ProductResponse updateProduct(Long id, ProductUpdateRequest request){
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException(id));
+
+        product.setName(request.getName());
+        product.setDescription(request.getDescription());
+        product.setPrice(request.getPrice());
+        product.setStockQuantity(request.getStockQuantity());
+        product.setCategory(request.getCategory());
+
+        product.setUpdatedAt(LocalDateTime.now());
+        productRepository.save(product);
+
+        return mapToResponse(product);
     }
 
     private ProductResponse mapToResponse(Product product){
