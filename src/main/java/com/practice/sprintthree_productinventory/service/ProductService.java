@@ -8,6 +8,7 @@ import com.practice.sprintthree_productinventory.model.Product;
 import com.practice.sprintthree_productinventory.repository.ProductRepository;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 public class ProductService {
     private final ProductRepository productRepository;
@@ -58,6 +59,15 @@ public class ProductService {
         productRepository.save(product);
 
         return mapToResponse(product);
+    }
+
+    public String deleteProduct(Long id){
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException(id));
+
+        productRepository.delete(product.getId());
+
+        return "Product with id " + id + " deleted successfully";
     }
 
     private ProductResponse mapToResponse(Product product){
