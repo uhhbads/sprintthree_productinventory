@@ -34,11 +34,25 @@ public class ProductService {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException(id));
 
-        product.setName(request.getName());
-        product.setDescription(request.getDescription());
-        product.setPrice(request.getPrice());
-        product.setStockQuantity(request.getStockQuantity());
-        product.setCategory(request.getCategory());
+        if(request.getName() != null){
+            product.setName(request.getName());
+        }
+
+        if(request.getDescription() != null){
+            product.setDescription(request.getDescription());
+        }
+
+        if(request.getPrice() != null){
+            product.setPrice(request.getPrice());
+        }
+
+        if(request.getStockQuantity() != null){
+            product.setStockQuantity(request.getStockQuantity());
+        }
+
+        if(request.getCategory() != null){
+            product.setCategory(request.getCategory());
+        }
 
         product.setUpdatedAt(LocalDateTime.now());
         productRepository.save(product);
