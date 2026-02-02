@@ -70,6 +70,13 @@ public class ProductService {
         return "Product with id " + id + " deleted successfully";
     }
 
+    public ProductResponse getProduct(Long id){
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException(id));
+
+        return mapToResponse(product);
+    }
+
     private ProductResponse mapToResponse(Product product){
         ProductResponse response = new ProductResponse();
         response.setId(product.getId());
