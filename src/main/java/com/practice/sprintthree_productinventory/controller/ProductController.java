@@ -86,4 +86,19 @@ public class ProductController {
                 .status(HttpStatus.OK)
                 .body(apiResponse);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse> deleteProduct(@PathVariable Long id){
+        productService.deleteProduct(id);
+
+        ApiResponse apiResponse = new ApiResponse();
+        apiResponse.setSuccess(true);
+        apiResponse.setMessage("Product deleted successfully");
+        apiResponse.setData(null);
+        apiResponse.setTimestamp(LocalDateTime.now());
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(apiResponse);
+    }
 }

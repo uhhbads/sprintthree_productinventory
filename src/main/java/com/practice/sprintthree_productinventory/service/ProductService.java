@@ -68,13 +68,11 @@ public class ProductService {
         return mapToResponse(product);
     }
 
-    public String deleteProduct(Long id){
+    public void deleteProduct(Long id){
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException(id));
 
         productRepository.delete(product.getId());
-
-        return "Product with id " + id + " deleted successfully";
     }
 
     public ProductResponse getProduct(Long id){
