@@ -1,6 +1,7 @@
 package com.practice.sprintthree_productinventory.repository;
 
 import com.practice.sprintthree_productinventory.model.Product;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
@@ -9,6 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
+@Repository
 public class ProductRepository {
     private final Map<Long, Product> store = new ConcurrentHashMap<>();
     private final AtomicLong idGenerator = new AtomicLong(1);
