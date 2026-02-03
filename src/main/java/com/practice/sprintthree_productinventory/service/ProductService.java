@@ -30,6 +30,7 @@ public class ProductService {
         product.setCategory(request.getCategory());
         product.setDescription(request.getDescription());
         product.setPrice(request.getPrice());
+        product.setStockQuantity(request.getStockQuantity());
 
         LocalDateTime now = LocalDateTime.now();
         product.setCreatedAt(now);
@@ -83,7 +84,13 @@ public class ProductService {
     }
 
     public List<ProductResponse> getAllProducts(String category){
-        List<Product> listProducts = productRepository.findByCategory(category);
+        List<Product> listProducts;
+
+        if (category == null || category.isBlank()) {
+            listProducts = productRepository.findAll();
+        } else {
+            listProducts = productRepository.findByCategory(category);
+        }
 
         return listProducts.stream()
                 .map(this::mapToResponse)
