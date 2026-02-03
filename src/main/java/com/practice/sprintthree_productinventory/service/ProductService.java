@@ -8,6 +8,7 @@ import com.practice.sprintthree_productinventory.model.Product;
 import com.practice.sprintthree_productinventory.repository.ProductRepository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 public class ProductService {
@@ -75,6 +76,14 @@ public class ProductService {
                 .orElseThrow(() -> new ProductNotFoundException(id));
 
         return mapToResponse(product);
+    }
+
+    public List<ProductResponse> getAllProducts(String category){
+        List<Product> listProducts = productRepository.findByCategory(category);
+
+        return listProducts.stream()
+                .map(this::mapToResponse)
+                .toList();
     }
 
     private ProductResponse mapToResponse(Product product){
