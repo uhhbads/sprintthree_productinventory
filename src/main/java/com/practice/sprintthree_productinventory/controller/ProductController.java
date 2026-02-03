@@ -2,6 +2,7 @@ package com.practice.sprintthree_productinventory.controller;
 
 import com.practice.sprintthree_productinventory.dto.request.ProductCreateRequest;
 import com.practice.sprintthree_productinventory.dto.request.ProductUpdateRequest;
+import com.practice.sprintthree_productinventory.dto.request.StockUpdateRequest;
 import com.practice.sprintthree_productinventory.dto.response.ApiResponse;
 import com.practice.sprintthree_productinventory.dto.response.ProductResponse;
 import com.practice.sprintthree_productinventory.service.ProductService;
@@ -95,6 +96,23 @@ public class ProductController {
         apiResponse.setSuccess(true);
         apiResponse.setMessage("Product deleted successfully");
         apiResponse.setData(null);
+        apiResponse.setTimestamp(LocalDateTime.now());
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(apiResponse);
+    }
+
+    @PatchMapping("/{id}/stock")
+    public ResponseEntity<ApiResponse> updateStock(
+            @PathVariable Long id,
+            @Valid @RequestBody StockUpdateRequest request){
+        ProductResponse productResponse = productService.updateStock(id, request);
+
+        ApiResponse apiResponse = new ApiResponse();
+        apiResponse.setSuccess(true);
+        apiResponse.setMessage("Product stock updated successfully");
+        apiResponse.setData(productResponse);
         apiResponse.setTimestamp(LocalDateTime.now());
 
         return ResponseEntity
