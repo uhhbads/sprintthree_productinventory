@@ -52,4 +52,20 @@ public class ProductController {
                 .status(HttpStatus.OK)
                 .body(apiResponse);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse> getProduct(
+            @PathVariable Long id){
+        ProductResponse productResponse = productService.getProduct(id);
+
+        ApiResponse apiResponse = new ApiResponse();
+        apiResponse.setSuccess(true);
+        apiResponse.setMessage("Product found successfully");
+        apiResponse.setData(productResponse);
+        apiResponse.setTimestamp(LocalDateTime.now());
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(apiResponse);
+    }
 }
