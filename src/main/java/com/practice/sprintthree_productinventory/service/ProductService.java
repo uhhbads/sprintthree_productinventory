@@ -2,9 +2,13 @@ package com.practice.sprintthree_productinventory.service;
 
 import com.practice.sprintthree_productinventory.dto.request.ProductCreateRequest;
 import com.practice.sprintthree_productinventory.dto.request.ProductUpdateRequest;
+import com.practice.sprintthree_productinventory.dto.request.StockUpdateRequest;
 import com.practice.sprintthree_productinventory.dto.response.ProductResponse;
+import com.practice.sprintthree_productinventory.exception.InsufficientStockException;
+import com.practice.sprintthree_productinventory.exception.InvalidRequestException;
 import com.practice.sprintthree_productinventory.exception.ProductNotFoundException;
 import com.practice.sprintthree_productinventory.model.Product;
+import com.practice.sprintthree_productinventory.model.StockOperation;
 import com.practice.sprintthree_productinventory.repository.ProductRepository;
 
 import java.time.LocalDateTime;
@@ -84,6 +88,27 @@ public class ProductService {
         return listProducts.stream()
                 .map(this::mapToResponse)
                 .toList();
+    }
+
+    public ProductResponse updateStock(Long id, StockUpdateRequest request){
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException(id));
+
+        if(request.getOperation() == StockOperation.ADD){
+            product.setStockQuantity(product.getStockQuantity() + request.getQuantity());
+        } else if(request.getOperation() == StockOperation.REMOVE){
+            if(product.getStockQuantity() < request.getQuantity()){
+                throw new InsufficientStockException("Insufficient stock");
+            }
+                product.setStockQuantity(product.getStockQuantity() - request.getQuantity());
+
+        } else{
+            throw new InvalidRequestException("Invalid stock operation");
+        }
+
+        product.setUpdatedAt(LocalDateTime.now());
+        productRepository.save(product);
+        return mapToResponse(product);
     }
 
     private ProductResponse mapToResponse(Product product){
