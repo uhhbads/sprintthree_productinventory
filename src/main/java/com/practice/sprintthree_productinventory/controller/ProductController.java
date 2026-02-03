@@ -1,8 +1,19 @@
 package com.practice.sprintthree_productinventory.controller;
 
+import com.practice.sprintthree_productinventory.dto.request.ProductCreateRequest;
+import com.practice.sprintthree_productinventory.dto.response.ApiResponse;
+import com.practice.sprintthree_productinventory.dto.response.ProductResponse;
 import com.practice.sprintthree_productinventory.service.ProductService;
+import jakarta.validation.Valid;
+import org.apache.coyote.Response;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/api/v1/products")
@@ -11,5 +22,20 @@ public class ProductController {
 
     public ProductController(ProductService productService) {
         this.productService = productService;
+    }
+
+    @PostMapping
+    public ResponseEntity<ApiResponse> createProduct(
+            @Valid @RequestBody ProductCreateRequest request){
+        ProductResponse productResponse = productService.createProduct(request);
+        ApiResponse apiResponse = new ApiResponse();
+        apiResponse.setSuccess(true);
+        apiResponse.setMessage("Product created successfully");
+        apiResponse.setData(productResponse);
+        apiResponse.setTimestamp(LocalDateTime.now());
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(apiResponse);
     }
 }
