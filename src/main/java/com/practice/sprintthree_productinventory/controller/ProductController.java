@@ -1,6 +1,7 @@
 package com.practice.sprintthree_productinventory.controller;
 
 import com.practice.sprintthree_productinventory.dto.request.ProductCreateRequest;
+import com.practice.sprintthree_productinventory.dto.request.ProductUpdateRequest;
 import com.practice.sprintthree_productinventory.dto.response.ApiResponse;
 import com.practice.sprintthree_productinventory.dto.response.ProductResponse;
 import com.practice.sprintthree_productinventory.service.ProductService;
@@ -61,6 +62,23 @@ public class ProductController {
         ApiResponse apiResponse = new ApiResponse();
         apiResponse.setSuccess(true);
         apiResponse.setMessage("Product found successfully");
+        apiResponse.setData(productResponse);
+        apiResponse.setTimestamp(LocalDateTime.now());
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(apiResponse);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ApiResponse> updateProduct(
+            @PathVariable Long id,
+            @Valid @RequestBody ProductUpdateRequest request){
+        ProductResponse productResponse = productService.updateProduct(id, request);
+
+        ApiResponse apiResponse = new ApiResponse();
+        apiResponse.setSuccess(true);
+        apiResponse.setMessage("Product updated successfully");
         apiResponse.setData(productResponse);
         apiResponse.setTimestamp(LocalDateTime.now());
 
