@@ -8,7 +8,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.2</version> <!-- downgraded from 4.0.2 -->
+        <version>4.0.1</version> <!-- downgraded from 4.0.2 -->
         <relativePath/>
     </parent>
 
@@ -19,7 +19,7 @@
     <description>sprintthree_productinventory</description>
 
     <properties>
-        <java.version>21</java.version>
+        <java.version>25</java.version>
         <lombok.version>1.18.40</lombok.version>
     </properties>
 
@@ -43,7 +43,11 @@
             <version>${lombok.version}</version>
             <optional>true</optional>
         </dependency>
-
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.8.14</version>
+        </dependency>
 
         <!-- Testing -->
         <dependency>
@@ -61,8 +65,6 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.11.0</version>
                 <configuration>
-                    <source>21</source>
-                    <target>21</target>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.projectlombok</groupId>
